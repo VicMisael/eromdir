@@ -44,12 +44,15 @@ for v in 11 10 9 8 7 6 5; do
   fi
 done
 
+
+version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | tail -n 1)" != "$1"; }
+
 if test "${amvers}" = "no" && automake --version > /dev/null 2>&1; then
   amvers="`automake --version | sed -e '1s/[^0-9]*//' -e q`"
-  if expr "$amvers" "<" "1.5" > /dev/null 2>&1; then
-    amvers="no"
+  if version_gt "1.5" "1.16.5"; then
+      amvers=""
   else
-    amvers=""
+    amvers="no"
   fi
 fi
 
